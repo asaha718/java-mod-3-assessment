@@ -2,6 +2,7 @@ public class Patient {
     private String name;
     private String ailment;
     private int healthIndex;
+
     public Patient(String name, String ailment, int healthIndex) {
         this.name = name;
         this.ailment = ailment;
@@ -17,16 +18,24 @@ public class Patient {
     }
 
     public void setHealthIndex(int healthIndex) {
-        this.healthIndex = healthIndex;
+        this.healthIndex = getHealthIndex() + healthIndex;
     }
 
     public String getName() {
         return name;
     }
 
-    public void getTreatment(int val){
+    public void getTreatment(int val) {
         setHealthIndex(getHealthIndex() + val);
     }
 
+    @Override
+    public String toString() {
+        return "Patient{" +
+                "name='" + name + '\'' +
+                ", ailment='" + ailment + '\'' +
+                ", healthIndex=" + healthIndex +
+                '}';
+    }
 }
 
