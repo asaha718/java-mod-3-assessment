@@ -26,6 +26,7 @@ public class HospitalWorld {
                 addDocsToHospital(scanner);
             }
 
+            //keep adding patients until user does not want to anymore
             Boolean addNewPatient = true;
 
             while (addNewPatient) {
@@ -39,6 +40,21 @@ public class HospitalWorld {
                 }
             }
 
+            //begin treating patients
+            Boolean treatPatients = true;
+
+            while (treatPatients) {
+                treatPatient(scanner);
+
+                System.out.println("Do you want keep treating a Patient? y/n");
+                String keepTreating = scanner.nextLine();
+
+                if (keepTreating.equals("y")) {
+                    treatPatients = true;
+                } else {
+                    treatPatients = false;
+                }
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -70,7 +86,7 @@ public class HospitalWorld {
 
         ArrayList<String> listOfAilments = new ArrayList<>();
         System.out.println("Add 2 ailments can this doctor treat? (one at a time)");
-        while(listOfAilments.size() < 2){
+        while (listOfAilments.size() < 2) {
             System.out.println("Example ailments: cold , headache, backpain, cancer, covid, etc.");
             System.out.println("Add treatable ailment? (type one and press enter)");
             String ailment = scanner.nextLine();
@@ -115,11 +131,50 @@ public class HospitalWorld {
             patientName = scanner.nextLine();
         }
 
-
         Patient enteringPatient = new Patient(patientName, patientAilment, patientHealth);
 
         Hospital.addPatient(enteringPatient);
 
+    }
+
+    public static void treatPatient(Scanner scanner) {
+        // pick a patient to treat
+        System.out.println("Pick a patient to treat");
+        for (int i = 0; i < Hospital.listOfPatients.size(); i++) {
+            Patient patient = Hospital.listOfPatients.get(i);
+            System.out.println("Type " + i + " to treat " + patient.getName() + "with " + patient.getAilment());
+        }
+
+        int patientIndex = Integer.parseInt(scanner.nextLine());
+
+        Patient treatedPatient = Hospital.listOfPatients.get(patientIndex);
+
+        System.out.println("Who should " + treatedPatient.getName() + " with " + treatedPatient.getAilment() + " see?");
+
+        // pick a doctor to treat patient
+        for (int i = 0; i < Hospital.listOfPatients.size(); i++) {
+            Doctor doc = Hospital.listOfDoctors.get(i);
+            System.out.println("Type " + i + " to treat " + doc.name + "with specialty in " + doc.specialty);
+        }
+        // if doc can treat ailment add to health index else do not
+        int docIndex = Integer.parseInt(scanner.nextLine());
+        Doctor treatingDoc = Hospital.listOfDoctors.get(patientIndex);
+
+        if(treatingDoc.ailments.contains(treatedPatient.getAilment())){
+            treatedPatient.setHealthIndex(10);
+            System.out.println(treatedPatient.getName() + "saw the correct doctor");
+            System.out.println(treatedPatient.getName() + " health index is now " + treatedPatient.getHealthIndex());
+        } else {
+            treatedPatient.setHealthIndex(5);
+            System.out.println(treatedPatient.getName() + "did not see the optimal doctor");
+            System.out.println(treatedPatient.getName() + " health index is now " + treatedPatient.getHealthIndex());
+        }
+
+        // if health index is >99 remove patient
+
+        if(treatedPatient.getHealthIndex() > 99) {
+            Hospital.listOfPatients.remove(patientIndex);
+        }
 
     }
 

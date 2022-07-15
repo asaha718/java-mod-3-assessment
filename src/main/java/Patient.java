@@ -8,6 +8,10 @@ public class Patient {
         this.healthIndex = healthIndex;
     }
 
+    public String getAilment() {
+        return ailment;
+    }
+
     public int getHealthIndex() {
         return healthIndex;
     }
