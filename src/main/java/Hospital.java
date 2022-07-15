@@ -13,7 +13,6 @@ public class Hospital {
         return name;
     }
 
-    public static HashMap<String, ArrayList> doctorClientRelation = new HashMap<>();
     public static List<Patient> listOfPatients = new ArrayList<>();
     public static List<Doctor> listOfDoctors = new ArrayList<>(3);
 

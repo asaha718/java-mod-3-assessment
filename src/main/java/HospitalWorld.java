@@ -39,11 +39,6 @@ public class HospitalWorld {
                 }
             }
 
-            System.out.println("~~~~~Summary of Todays Visits~~~~~~");
-
-            for (String doc : Hospital.doctorClientRelation.keySet()) {
-                System.out.println("Dr." + doc + " has " + Hospital.doctorClientRelation.get(doc).size() + " patients");
-            }
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -67,7 +62,27 @@ public class HospitalWorld {
         System.out.println("What is the Doctor's Specialty (ex. Dermatology, Pediatrics, Radiology...) : ");
         String specialty = scanner.nextLine();
 
-        Doctor newDoc = new Doctor(docName, specialty);
+        while (specialty.isEmpty()) {
+            System.out.println("Nothing was entered. Please try again");
+            System.out.println("-Enter specialty-");
+            specialty = scanner.nextLine();
+        }
+
+        ArrayList<String> listOfAilments = new ArrayList<>();
+        System.out.println("Add 2 ailments can this doctor treat? (one at a time)");
+        while(listOfAilments.size() < 2){
+            System.out.println("Example ailments: cold , headache, backpain, cancer, covid, etc.");
+            System.out.println("Add treatable ailment? (type one and press enter)");
+            String ailment = scanner.nextLine();
+            while (ailment.isEmpty()) {
+                System.out.println("Nothing was entered. Please try again");
+                System.out.println("-Enter specialty-");
+                ailment = scanner.nextLine();
+            }
+            listOfAilments.add(ailment);
+        }
+
+        Doctor newDoc = new Doctor(docName, specialty, listOfAilments);
 
         Hospital.addDoctor(newDoc);
         System.out.println(newDoc.name + " has been added to the Hospital!");
