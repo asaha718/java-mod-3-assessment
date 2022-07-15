@@ -1,4 +1,9 @@
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.io.*;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class HospitalWorld {
@@ -58,6 +63,14 @@ public class HospitalWorld {
 
         } catch (Exception e) {
             e.printStackTrace();
+        }
+
+        List<Patient> patientList = Hospital.listOfPatients;
+
+        try {
+            writeJson(patientList);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
         }
 
         System.out.println("Thank you for using Anug's Hospital System");
@@ -142,7 +155,7 @@ public class HospitalWorld {
         System.out.println("Pick a patient to treat");
         for (int i = 0; i < Hospital.listOfPatients.size(); i++) {
             Patient patient = Hospital.listOfPatients.get(i);
-            System.out.println("Type " + i + " to treat " + patient.getName() + "with " + patient.getAilment());
+            System.out.println("Type " + i + " to treat " + patient.getName() + " with " + patient.getAilment());
         }
 
         int patientIndex = Integer.parseInt(scanner.nextLine());
@@ -154,7 +167,7 @@ public class HospitalWorld {
         // pick a doctor to treat patient
         for (int i = 0; i < Hospital.listOfPatients.size(); i++) {
             Doctor doc = Hospital.listOfDoctors.get(i);
-            System.out.println("Type " + i + " to treat " + doc.name + "with specialty in " + doc.specialty);
+            System.out.println("Type " + i + " to treat " + doc.name + " with specialty in " + doc.specialty);
         }
         // if doc can treat ailment add to health index else do not
         int docIndex = Integer.parseInt(scanner.nextLine());
@@ -173,10 +186,23 @@ public class HospitalWorld {
         // if health index is >99 remove patient
 
         if(treatedPatient.getHealthIndex() > 99) {
+            System.out.println("Patient is in full health");
+            System.out.println(treatedPatient.getName() + " has been discharged");
             Hospital.listOfPatients.remove(patientIndex);
         }
 
     }
 
+    public static void writeJson(List<Patient> patients) throws JsonProcessingException {
+        String json = new ObjectMapper().writeValueAsString(patients);
+        System.out.println(json);
+        //Write JSON to file.
+        try {
+            FileReader.writeToFile("myPatients.json", json);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
 }
 
