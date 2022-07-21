@@ -3,24 +3,28 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class Hospital {
+public class Hospital implements HealthcareCompositeTreeStuff {
     private String name;
-    public Hospital(String name) {
-        this.name = name;
+    private List<Department> departments;
+
+    @Override
+    public void addPatient(Patient patient) {
+        Department relevantDepartment = departments.stream().filter(department -> /*find the department that has the right specialty for the patient*/)).findFirst().orElseThrow(() -> new IllegalAccessError());
+        relevantDepartment.addPatient(patient);
     }
 
-    public String getName() {
-        return name;
+    @Override
+    public void removePatient(Patient patient) {
+
     }
 
-    public static List<Patient> listOfPatients = new ArrayList<>();
-    public static List<Doctor> listOfDoctors = new ArrayList<>(3);
-
-    public static void addDoctor(Doctor doc){
-        listOfDoctors.add(doc);
+    @Override
+    public boolean containsPatient(Patient patient) {
+        return false;
     }
 
-    public static void addPatient(Patient patient){
-        listOfPatients.add(patient);
+    @Override
+    public void treatPatient(Patient patient) {
+
     }
 }

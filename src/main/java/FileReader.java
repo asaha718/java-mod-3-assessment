@@ -1,7 +1,11 @@
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Scanner;
 
 public class FileReader {
@@ -9,36 +13,15 @@ public class FileReader {
         return readFromFile(fileName, true);
     }
     public static String readFromFile(String fileName, boolean addNewLine) {
-        String returnString = new String();
-        Scanner fileReader = null;
         try {
-            File myFile = new File(fileName);
-            fileReader = new Scanner(myFile);
-            while (fileReader.hasNextLine()) {
-                returnString += fileReader.nextLine();
-                if (addNewLine)
-                    returnString += "\n";
-            }
-        } catch (IOException ioException) {
-            ioException.printStackTrace();
-        } finally {
-            if (fileReader != null)
-                fileReader.close();
+           return Files.readString(Path.of("myPatients.json"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
-
-        return returnString;
     }
 
-    public static void writeToFile(String fileName, String text) throws IOException {
-        FileWriter fileWriter = null;
-        try {
-            fileWriter = new FileWriter(fileName);
-            fileWriter.write(text);
-        } catch (IOException ioException) {
-            ioException.printStackTrace();
-        } finally {
-            if (fileWriter != null)
-                fileWriter.close();
-        }
+    public static void writeToFile(String fileName, Hospital hospital) throws IOException {
+        new ObjectMapper().writeValue(new File("myPatients.json"), hospital);
+
     }
 }

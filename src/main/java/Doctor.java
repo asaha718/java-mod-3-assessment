@@ -1,15 +1,28 @@
 import java.util.ArrayList;
+import java.util.List;
 
-public class Doctor {
-    public String name;
-    public String specialty;
-    public ArrayList<String> ailments;
+public class Doctor implements  HealthcareCompositeTreeStuff {
+    private String name;
+    private List<Patient> patients;
 
-    public Doctor(String name, String specialty, ArrayList ailments) {
-        this.name = name;
-        this.specialty = specialty;
-        this.ailments = ailments;
+
+    @Override
+    public void addPatient(Patient patient) {
+        patients.add(patient);
     }
 
+    @Override
+    public void removePatient(Patient patient) {
+        patients.remove(patient);
+    }
 
+    @Override
+    public boolean containsPatient(Patient patient) {
+        return false;
+    }
+
+    @Override
+    public void treatPatient(Patient patient) {
+
+    }
 }
